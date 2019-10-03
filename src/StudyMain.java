@@ -31,8 +31,10 @@ public class StudyMain {
 
         while(!quit) {
             System.out.println("Main Menu");
+            System.out.println("ID\tTask");
 
-            tasks.forEach((k,v) -> System.out.println(k + " " + v.getName() + "\n"));
+
+            tasks.forEach((k,v) -> System.out.println(k + "\t" + v.getName() + "\n"));
 
             System.out.print("Please select an option: " +
                     "(A = Add Task, D = Delete Task, I = Task Info, Q = Quit): ");
@@ -47,9 +49,15 @@ public class StudyMain {
                         root.addTask();
                         invalid = false;
                         break;
-                    case "D":
-                        System.out.print("Which task would you like to delete?");
-                        int deleteId = Integer.parseInt(in.nextLine());
+                    case "D": //delete a task from the list given an ID
+                        System.out.print("Enter the ID of the task you would like to delete: ");
+                        String deleteInput = in.nextLine();
+                        int deleteId = -1;
+                        try {
+                            deleteId = Integer.parseInt(deleteInput);
+                        } catch (Exception e) {
+                            System.out.println("Invalid input.");
+                        }
                         root.deleteTask(deleteId);
                         invalid = false;
                         break;
@@ -69,7 +77,6 @@ public class StudyMain {
 
             } //while invalid loop
         }//while quit
-        System.out.println("I'm outside the while loop!");
         in.close();
     } // showMenu()
 
@@ -86,8 +93,14 @@ public class StudyMain {
         System.out.println("Task added!" + "\n");
     }
     void deleteTask(int id) {
-        tasks.entrySet().remove(tasks.get(id));
-        System.out.println("Task removed successfully");
+        if (tasks.keySet().contains(id)) {
+            tasks.remove(id);
+            System.out.println("Task removed successfully");
+
+        }
+        else {
+            System.out.println("Task not found.");
+        }
     }
 }
 
