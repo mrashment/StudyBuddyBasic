@@ -22,41 +22,46 @@ public class StudyMain {
     //shows menu and allows user to choose an option to interact
     public void showMenu(StudyMain root) {
         in = new Scanner(System.in);
-        System.out.println("Main Menu");
-        for (Task t : tasks) {
-            System.out.println(t.getId() + " " + t.getName() + "\n");
-        }
+        boolean quit = false;
 
-        System.out.print("Please select an option: " +
-                "(A = Add Task, D = Delete Task, I = Task Info, Q = Quit): ");
-        String input;
-        boolean invalid = true;
-        while (invalid) {
-            input = in.nextLine();
-            input = input.toUpperCase();
-
-            switch(input) {
-                case "A":
-                    root.addTask(root);
-                    invalid = false;
-                    break;
-                case "D":
-                    invalid = false;
-                    break;
-                case "I":
-                    invalid = false;
-                    break;
-                case "Q":
-                    invalid = false;
-                    System.out.println("Goodbye!");
-                    break;
-
-                default:
-                    System.out.println("Oops! Invalid entry. Try again: ");
-
+        while(!quit) {
+            System.out.println("Main Menu");
+            for (Task t : tasks) {
+                System.out.println(t.getId() + " " + t.getName() + "\n");
             }
 
-        } //while loop
+            System.out.print("Please select an option: " +
+                    "(A = Add Task, D = Delete Task, I = Task Info, Q = Quit): ");
+            String input;
+            boolean invalid = true;
+            while (invalid) {
+                input = in.nextLine();
+                input = input.toUpperCase();
+
+                switch (input) {
+                    case "A":
+                        root.addTask(root);
+                        invalid = false;
+                        break;
+                    case "D":
+                        invalid = false;
+                        break;
+                    case "I":
+                        invalid = false;
+                        break;
+                    case "Q":
+                        invalid = false;
+                        quit = true;
+                        System.out.println("Goodbye!");
+                        break;
+
+                    default:
+                        System.out.println("Oops! Invalid entry. Try again: ");
+
+                }
+
+            } //while invalid loop
+        }//while quit
         System.out.println("I'm outside the while loop!");
         in.close();
     } // showMenu()
@@ -71,9 +76,8 @@ public class StudyMain {
         System.out.println("Please enter a task description: ");
         String taskDesc = in.nextLine();
         tasks.add(new Task(tasks.size() + 1, taskName, taskDesc));
-        System.out.println("Task added!");
+        System.out.println("Task added!" + "\n");
 
-        root.showMenu(root);
 
     }
 }
