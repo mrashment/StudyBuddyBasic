@@ -12,11 +12,22 @@ public class Task {
 
     }
 
+    //toString
+    public String toString() {
+        String taskString = "";
+        taskString += this.getId() + "\tName: " + this.getName() + "\n";
+        taskString += "\tDescription: " + this.getDesc();
+        taskString += "\n\tTime spent on this task: " + this.getTimeSpent();
+
+        return taskString;
+    }
+
     //setters
     public void setTimeSpent(int time) {
         this.timeSpent = time;
     }
-
+    public void setName(String name) {this.taskName = name;}
+    public void setDesc(String desc) {this.taskDesc = desc;}
 
     //getters
     public int getId() {
@@ -31,4 +42,6 @@ public class Task {
     public int getTimeSpent() {
         return this.timeSpent;
     }
+
+    //
 }

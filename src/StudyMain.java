@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -20,8 +20,6 @@ public class StudyMain {
         //create interface
         StudyMain root = new StudyMain();
         root.showMenu(root);
-
-
     }
 
     //shows menu and allows user to choose an option to interact
@@ -37,7 +35,7 @@ public class StudyMain {
             tasks.forEach((k,v) -> System.out.println(k + "\t" + v.getName() + "\n"));
 
             System.out.print("Please select an option: " +
-                    "(A = Add Task, D = Delete Task, I = Task Info, Q = Quit): ");
+                    "(S = Start Task, A = Add Task, D = Delete Task, I = Task Info, Q = Quit): ");
             String input;
             boolean invalid = true;
             while (invalid) {
@@ -45,7 +43,10 @@ public class StudyMain {
                 input = input.toUpperCase();
 
                 switch (input) {
-                    case "A":
+                    case "S": //start logging time on this task
+                        invalid = false;
+                        break;
+                    case "A": //add task to tasks
                         root.addTask();
                         invalid = false;
                         break;
@@ -61,16 +62,24 @@ public class StudyMain {
                         root.deleteTask(deleteId);
                         invalid = false;
                         break;
-                    case "I":
+                    case "I": //show information about the task
+                        System.out.println("Enter the ID of the task you would like to know more about: ");
+                        String infoInput = in.nextLine();
+                        int infoId = -1;
+                        try {
+                            infoId = Integer.parseInt(infoInput);
+                        } catch (Exception e) {
+                            System.out.println("Invalid input.");
+                        }
+                        root.showInfo(infoId);
                         invalid = false;
                         break;
-                    case "Q":
+                    case "Q": //quit this program
                         invalid = false;
                         quit = true;
                         System.out.println("Goodbye!");
                         break;
-
-                    default:
+                    default: //make them retry
                         System.out.println("Oops! Invalid entry. Try again: ");
 
                 }
@@ -89,14 +98,38 @@ public class StudyMain {
         String taskName = in.nextLine();
         System.out.println("Please enter a task description: ");
         String taskDesc = in.nextLine();
+        //create the task
         tasks.put(this.idCounter, new Task(this.idCounter++, taskName, taskDesc));
         System.out.println("Task added!" + "\n");
     }
+
+    //delete the task from tasks
     void deleteTask(int id) {
+        //if the task actually exists
         if (tasks.keySet().contains(id)) {
             tasks.remove(id);
             System.out.println("Task removed successfully");
 
+        }
+        else {
+            System.out.println("Task not found.");
+        }
+    }
+
+    //show info about the task
+    void showInfo(int id) {
+        if (tasks.keySet().contains(id)) {
+            System.out.println(tasks.get(id).toString());
+        }
+        else {
+            System.out.println("Task not found.");
+        }
+    }
+
+    //start logging time on task
+    void startTask(int id) {
+        if (tasks.keySet().contains(id)) {
+            //do some stuff
         }
         else {
             System.out.println("Task not found.");
