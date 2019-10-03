@@ -1,14 +1,19 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class StudyMain {
 
-    Scanner in;
-    ArrayList<Task> tasks;
+    private Scanner in;
+    private HashMap<Integer, Task> tasks;
+    private int idCounter;
 
     public StudyMain() {
-        tasks = new ArrayList<>();
-    };
+        tasks = new HashMap<>();
+        idCounter = 1;
+    }
+
+    //main
     public static void main(String[] args) {
         //store tasks that the user inputs
         //keep track of amount of time that user spends on that task
@@ -20,15 +25,14 @@ public class StudyMain {
     }
 
     //shows menu and allows user to choose an option to interact
-    public void showMenu(StudyMain root) {
+    void showMenu(StudyMain root) {
         in = new Scanner(System.in);
         boolean quit = false;
 
         while(!quit) {
             System.out.println("Main Menu");
-            for (Task t : tasks) {
-                System.out.println(t.getId() + " " + t.getName() + "\n");
-            }
+
+            tasks.forEach((k,v) -> System.out.println(k + " " + v.getName() + "\n"));
 
             System.out.print("Please select an option: " +
                     "(A = Add Task, D = Delete Task, I = Task Info, Q = Quit): ");
@@ -40,10 +44,13 @@ public class StudyMain {
 
                 switch (input) {
                     case "A":
-                        root.addTask(root);
+                        root.addTask();
                         invalid = false;
                         break;
                     case "D":
+                        System.out.print("Which task would you like to delete?");
+                        int deleteId = Integer.parseInt(in.nextLine());
+                        root.deleteTask(deleteId);
                         invalid = false;
                         break;
                     case "I":
@@ -67,7 +74,7 @@ public class StudyMain {
     } // showMenu()
 
     //add a task to the tasklist
-    public void addTask(StudyMain root) {
+    void addTask() {
         in = new Scanner(System.in);
 
         //get user input for task name and description
@@ -75,10 +82,12 @@ public class StudyMain {
         String taskName = in.nextLine();
         System.out.println("Please enter a task description: ");
         String taskDesc = in.nextLine();
-        tasks.add(new Task(tasks.size() + 1, taskName, taskDesc));
+        tasks.put(this.idCounter, new Task(this.idCounter++, taskName, taskDesc));
         System.out.println("Task added!" + "\n");
-
-
+    }
+    void deleteTask(int id) {
+        tasks.entrySet().remove(tasks.get(id));
+        System.out.println("Task removed successfully");
     }
 }
 
