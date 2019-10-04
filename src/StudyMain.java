@@ -1,6 +1,7 @@
 
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Timer;
 
 public class StudyMain {
 
@@ -9,20 +10,21 @@ public class StudyMain {
     private int idCounter;
 
     public StudyMain() {
-        tasks = new HashMap<>();
-        idCounter = 1;
+        this.tasks = new HashMap<>();
+        this.idCounter = 1;
+
     }
 
     //main
     public static void main(String[] args) {
-        //store tasks that the user inputs
-        //keep track of amount of time that user spends on that task
-        //create interface
+        // store tasks that the user inputs
+        // keep track of amount of time that user spends on that task
+        // create interface
         StudyMain root = new StudyMain();
         root.showMenu();
     }
 
-    //shows menu and allows user to choose an option to interact
+    // shows menu and allows user to choose an option to interact
     void showMenu() {
         in = new Scanner(System.in);
         boolean quit = false;
@@ -68,6 +70,7 @@ public class StudyMain {
                     case "Q": //quit this program
                         invalid = false;
                         quit = true;
+                        quit();
                         System.out.println("Goodbye!");
                         break;
                     default: //make them retry
@@ -75,12 +78,12 @@ public class StudyMain {
 
                 }
 
-            } //while invalid loop
-        }//while quit
+            } // while invalid loop
+        }// while quit
         in.close();
     } // showMenu()
 
-    //add a task to the tasklist
+    // add a task to the tasklist
     void addTask() {
         in = new Scanner(System.in);
 
@@ -94,7 +97,7 @@ public class StudyMain {
         System.out.println("Task added!" + "\n");
     }
 
-    //delete the task from tasks
+    // delete the task from tasks
     void deleteTask(int id) {
         //if the task actually exists
         if (tasks.keySet().contains(id)) {
@@ -109,7 +112,7 @@ public class StudyMain {
         }
     }
 
-    //show info about the task
+    // show info about the task
     void showInfo(int id) {
         if (tasks.keySet().contains(id)) {
             System.out.println(tasks.get(id).toString());
@@ -121,28 +124,35 @@ public class StudyMain {
         }
     }
 
-    //start logging time on task
+    // start logging time on task
     void startTask(int id) {
         if (tasks.keySet().contains(id)) {
-            //do some stuff
+            tasks.get(id).startTask();
+            Thread t = new Thread(tasks.get(id));
+            t.start();
         }
         else {
             System.out.println("Task not found.");
         }
     }
 
-    //pause before going to next action
+    //end program
+    void quit() {
+        tasks.forEach((k,v) -> v.endTask());
+    }
+
+    // pause before going to next action
     void pause() {
         System.out.print("Press enter to continue...");
         in.nextLine();
     }
 
-    //parse input on chosen id
+    // parse input to get chosen task id
     int parseId() {
         String userIn = in.nextLine();
-        int id = -1; //if invalid input, this will be passed to the corresponding function and they will be sent back to menu
+        int id = -1; // if invalid input, this will be passed to the corresponding function and they will be sent back to menu
         try {
-            id = Integer.parseInt(userIn); //if the number is not a real id, they'll just be sent back to the menu
+            id = Integer.parseInt(userIn); // if the number is not a real id, they'll just be sent back to the menu
         } catch (Exception e) {
             System.out.println("Invalid input.");
         }
