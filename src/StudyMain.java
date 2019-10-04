@@ -19,11 +19,11 @@ public class StudyMain {
         //keep track of amount of time that user spends on that task
         //create interface
         StudyMain root = new StudyMain();
-        root.showMenu(root);
+        root.showMenu();
     }
 
     //shows menu and allows user to choose an option to interact
-    void showMenu(StudyMain root) {
+    void showMenu() {
         in = new Scanner(System.in);
         boolean quit = false;
 
@@ -44,34 +44,25 @@ public class StudyMain {
 
                 switch (input) {
                     case "S": //start logging time on this task
+                        System.out.print("Enter the ID of the task you would like to start: ");
+                        int startId = parseId();
+                        startTask(startId);
                         invalid = false;
                         break;
                     case "A": //add task to tasks
-                        root.addTask();
+                        addTask();
                         invalid = false;
                         break;
                     case "D": //delete a task from the list given an ID
                         System.out.print("Enter the ID of the task you would like to delete: ");
-                        String deleteInput = in.nextLine();
-                        int deleteId = -1;
-                        try {
-                            deleteId = Integer.parseInt(deleteInput);
-                        } catch (Exception e) {
-                            System.out.println("Invalid input.");
-                        }
-                        root.deleteTask(deleteId);
+                        int deleteId = parseId();
+                        deleteTask(deleteId);
                         invalid = false;
                         break;
                     case "I": //show information about the task
                         System.out.println("Enter the ID of the task you would like to know more about: ");
-                        String infoInput = in.nextLine();
-                        int infoId = -1;
-                        try {
-                            infoId = Integer.parseInt(infoInput);
-                        } catch (Exception e) {
-                            System.out.println("Invalid input.");
-                        }
-                        root.showInfo(infoId);
+                        int infoId = parseId();
+                        showInfo(infoId);
                         invalid = false;
                         break;
                     case "Q": //quit this program
@@ -109,10 +100,12 @@ public class StudyMain {
         if (tasks.keySet().contains(id)) {
             tasks.remove(id);
             System.out.println("Task removed successfully");
+            pause();
 
         }
         else {
             System.out.println("Task not found.");
+            pause();
         }
     }
 
@@ -120,9 +113,11 @@ public class StudyMain {
     void showInfo(int id) {
         if (tasks.keySet().contains(id)) {
             System.out.println(tasks.get(id).toString());
+            pause();
         }
         else {
             System.out.println("Task not found.");
+            pause();
         }
     }
 
@@ -134,6 +129,24 @@ public class StudyMain {
         else {
             System.out.println("Task not found.");
         }
+    }
+
+    //pause before going to next action
+    void pause() {
+        System.out.print("Press enter to continue...");
+        in.nextLine();
+    }
+
+    //parse input on chosen id
+    int parseId() {
+        String userIn = in.nextLine();
+        int id = -1; //if invalid input, this will be passed to the corresponding function and they will be sent back to menu
+        try {
+            id = Integer.parseInt(userIn); //if the number is not a real id, they'll just be sent back to the menu
+        } catch (Exception e) {
+            System.out.println("Invalid input.");
+        }
+        return id;
     }
 }
 
