@@ -7,18 +7,17 @@ public class StudyMain {
     private Scanner in;
     private HashMap<Integer, Task> tasks;
     private int idCounter;
+    private RecordHelper rec;
 
     public StudyMain() {
         this.tasks = new HashMap<>();
         this.idCounter = 1;
+        this.rec = new RecordHelper(this);
 
     }
 
     //main
     public static void main(String[] args) {
-        // store tasks that the user inputs
-        // keep track of amount of time that user spends on that task
-        // create interface
         StudyMain root = new StudyMain();
         root.showMenu();
     }
@@ -103,14 +102,20 @@ public class StudyMain {
         System.out.println("Please enter a task description: ");
         String taskDesc = in.nextLine();
         //create the task
-        tasks.put(this.idCounter, new Task(this.idCounter++, taskName, taskDesc));
+        tasks.put(this.idCounter, new Task(this.idCounter++, taskName, taskDesc,0));
         System.out.println("Task added!" + "\n");
+    }
+
+    // used by recordHelper to populate tasks from file
+    public void addTask(String name, String desc, int time) {
+        tasks.put(this.idCounter,new Task(this.idCounter++,name,desc,time));
     }
 
     // delete the task from tasks
     void deleteTask(int id) {
         //if the task actually exists
         if (tasks.keySet().contains(id)) {
+            tasks.get(id).endTask();
             tasks.remove(id);
             System.out.println("Task removed successfully");
             pause();
@@ -160,7 +165,11 @@ public class StudyMain {
 
     //end program
     void quit() {
-        tasks.forEach((k,v) -> v.endTask());
+        for (Task t : tasks.values()) {
+            if (t.getRunning()) {
+                t.endTask();
+            }
+        }
     }
 
     // pause before going to next action

@@ -10,12 +10,12 @@ public class Task {
     private Timer timer;
     private boolean running;
 
-    public Task(int id, String taskName, String taskDesc) {
+    public Task(int id, String taskName, String taskDesc,int timeSpent) {
         this.id = id;
         this.taskName = taskName;
         this.taskDesc = taskDesc;
         this.running = false;
-
+        this.timeSpent = timeSpent;
     }
 
     //toString
