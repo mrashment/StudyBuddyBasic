@@ -1,7 +1,6 @@
 
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.Timer;
 
 public class StudyMain {
 
@@ -24,20 +23,23 @@ public class StudyMain {
         root.showMenu();
     }
 
-    // shows menu and allows user to choose an option to interact
+    // shows the main menu
     void showMenu() {
         in = new Scanner(System.in);
         boolean quit = false;
 
+        // shows the menu and options while the user hasn't triggered quit
         while(!quit) {
             System.out.println("Main Menu");
             System.out.println("ID\tTask");
 
+            // prints tasks
+            tasks.forEach((k,v) -> System.out.println(k + "\t" + v.getTaskName() + "\n"));
 
-            tasks.forEach((k,v) -> System.out.println(k + "\t" + v.getName() + "\n"));
+            System.out.print("Please select an option " +
+                    "(S = Start Task, T = Stop Task, A = Add Task, D = Delete Task, I = Task Info, Q = Quit): ");
 
-            System.out.print("Please select an option: " +
-                    "(S = Start Task, A = Add Task, D = Delete Task, I = Task Info, Q = Quit): ");
+            //prompts the user for input until they give something valid
             String input;
             boolean invalid = true;
             while (invalid) {
@@ -49,6 +51,14 @@ public class StudyMain {
                         System.out.print("Enter the ID of the task you would like to start: ");
                         int startId = parseId();
                         startTask(startId);
+                        invalid = false;
+                        break;
+                    case "T":
+                        System.out.print("Currently running tasks by ID: (");
+                        tasks.forEach((k,v) -> System.out.print(v.getRunning() ? k + ", ": ""));
+                        System.out.print(")\nWhich task would you like to stop?: ");
+                        int stopId = parseId();
+                        stopTask(stopId);
                         invalid = false;
                         break;
                     case "A": //add task to tasks
@@ -128,8 +138,20 @@ public class StudyMain {
     void startTask(int id) {
         if (tasks.keySet().contains(id)) {
             tasks.get(id).startTask();
-            Thread t = new Thread(tasks.get(id));
-            t.start();
+            System.out.println("Task Started!");
+            pause();
+        }
+        else {
+            System.out.println("Task not found.");
+        }
+    }
+
+    //stop a currently running task
+    void stopTask(int id) {
+        if (tasks.keySet().contains(id)) {
+            tasks.get(id).endTask();
+            System.out.println("Task Stopped.");
+            pause();
         }
         else {
             System.out.println("Task not found.");
