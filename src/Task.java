@@ -1,7 +1,7 @@
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Task extends Thread {
+public class Task {
 
     private int id;
     private String taskName;
@@ -15,7 +15,6 @@ public class Task extends Thread {
         this.taskName = taskName;
         this.taskDesc = taskDesc;
         this.running = false;
-        this.timer = new Timer();
 
     }
 
@@ -31,18 +30,7 @@ public class Task extends Thread {
 
     public void startTask() {
         this.running = true;
-        this.start();
-    }
-
-    public void endTask() {
-        this.running = false;
-        this.timer.cancel();
-
-    }
-
-    //override from thread class
-    @Override
-    public void run() {
+        timer = new Timer();
         //increments timeSpent
         TimerTask count = new TimerTask() {
 
@@ -53,6 +41,11 @@ public class Task extends Thread {
         };
         //perform count once every second
         timer.schedule(count, 1000,1000);
+    }
+
+    public void endTask() {
+        this.running = false;
+        this.timer.cancel();
     }
 
     //setters
