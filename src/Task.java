@@ -23,7 +23,7 @@ public class Task {
         String taskString = "";
         taskString += this.getTaskId() + "\tName: " + this.getTaskName() + "\n";
         taskString += "\tDescription: " + this.getDesc();
-        taskString += "\n\tTime spent on this task: " + this.getTimeSpent();
+        taskString += "\n\tTime spent on this task: " + this.getTimeSpent() + " seconds";
 
         return taskString;
     }

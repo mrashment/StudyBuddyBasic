@@ -29,13 +29,13 @@ public class StudyMain {
 
         // shows the menu and options while the user hasn't triggered quit
         while(!quit) {
-            System.out.println("Main Menu");
+            System.out.println("Main Menu\n");
             System.out.println("ID\tTask");
 
             // prints tasks
-            tasks.forEach((k,v) -> System.out.println(k + "\t" + v.getTaskName() + "\n"));
+            tasks.forEach((k,v) -> System.out.println(k + "\t" + v.getTaskName()));
 
-            System.out.print("Please select an option " +
+            System.out.print("\nPlease select an option " +
                     "(S = Start Task, T = Stop Task, A = Add Task, D = Delete Task, I = Task Info, Q = Quit): ");
 
             //prompts the user for input until they give something valid
