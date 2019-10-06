@@ -44,8 +44,10 @@ public class Task {
     }
 
     public void endTask() {
-        this.running = false;
-        this.timer.cancel();
+        if (this.running) {
+            this.running = false;
+            this.timer.cancel();
+        }
     }
 
     //setters

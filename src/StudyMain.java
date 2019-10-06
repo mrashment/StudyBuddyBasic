@@ -8,12 +8,13 @@ public class StudyMain {
     private HashMap<Integer, Task> tasks;
     private int idCounter;
     private RecordHelper rec;
+    private boolean quit;
 
     public StudyMain() {
         this.tasks = new HashMap<>();
         this.idCounter = 1;
         this.rec = new RecordHelper(this);
-
+        this.quit = false;
     }
 
     //main
@@ -25,7 +26,6 @@ public class StudyMain {
     // shows the main menu
     void showMenu() {
         in = new Scanner(System.in);
-        boolean quit = false;
 
         // shows the menu and options while the user hasn't triggered quit
         while(!quit) {
@@ -78,7 +78,6 @@ public class StudyMain {
                         break;
                     case "Q": //quit this program
                         invalid = false;
-                        quit = true;
                         quit();
                         System.out.println("Goodbye!");
                         break;
@@ -151,7 +150,7 @@ public class StudyMain {
         }
     }
 
-    //stop a currently running task
+    // stop a currently running task
     void stopTask(int id) {
         if (tasks.keySet().contains(id)) {
             tasks.get(id).endTask();
@@ -163,13 +162,20 @@ public class StudyMain {
         }
     }
 
-    //end program
+    // end program
     void quit() {
+        this.quit = true;
+        // stop each task
         for (Task t : tasks.values()) {
             if (t.getRunning()) {
                 t.endTask();
             }
         }
+
+        // write the tasks to a file
+        this.rec.writeToFile(this);
+
+        this.in.close();
     }
 
     // pause before going to next action
@@ -188,6 +194,11 @@ public class StudyMain {
             System.out.println("Invalid input.");
         }
         return id;
+    }
+
+    // getter for tasks
+    public HashMap<Integer,Task> getTasks() {
+        return this.tasks;
     }
 }
 
