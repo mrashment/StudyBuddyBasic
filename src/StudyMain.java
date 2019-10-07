@@ -29,7 +29,7 @@ public class StudyMain {
 
         // shows the menu and options while the user hasn't triggered quit
         while(!quit) {
-            System.out.println("Main Menu\n");
+            System.out.println("--Main Menu--\n");
             System.out.println("ID\tTask");
 
             // prints tasks

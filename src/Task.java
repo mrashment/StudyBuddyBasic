@@ -20,10 +20,13 @@ public class Task {
 
     //toString
     public String toString() {
+        int seconds = timeSpent%60;
+        int minutes = (timeSpent%3600)/60;
+        int hours = timeSpent/3600;
         String taskString = "";
-        taskString += this.getTaskId() + "\tName: " + this.getTaskName() + "\n";
-        taskString += "\tDescription: " + this.getDesc();
-        taskString += "\n\tTime spent on this task: " + this.getTimeSpent() + " seconds";
+        taskString += this.getTaskId() + "\tName: " + this.taskName + "\n";
+        taskString += "\tDescription: " + this.taskDesc;
+        taskString += "\n\tTime spent on this task: " + hours + " hour(s) " + minutes + " minute(s) " + seconds + " second(s)";
 
         return taskString;
     }
