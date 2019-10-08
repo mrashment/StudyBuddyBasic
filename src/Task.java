@@ -27,23 +27,26 @@ public class Task {
         taskString += this.getTaskId() + "\tName: " + this.taskName + "\n";
         taskString += "\tDescription: " + this.taskDesc;
         taskString += "\n\tTime spent on this task: " + hours + " hour(s) " + minutes + " minute(s) " + seconds + " second(s)";
+        taskString += "\n\tRunning: " + this.getRunning();
 
         return taskString;
     }
 
     public void startTask() {
-        this.running = true;
-        timer = new Timer();
-        //increments timeSpent
-        TimerTask count = new TimerTask() {
+        if (!this.getRunning()) {
+            this.running = true;
+            timer = new Timer();
+            //increments timeSpent
+            TimerTask count = new TimerTask() {
 
-            @Override
-            public void run() {
-                setTimeSpent(timeSpent + 1);
-            }
-        };
-        //perform count once every second
-        timer.schedule(count, 1000,1000);
+                @Override
+                public void run() {
+                    setTimeSpent(timeSpent + 1);
+                }
+            };
+            //perform count once every second
+            timer.schedule(count, 1000, 1000);
+        }
     }
 
     public void endTask() {

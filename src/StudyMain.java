@@ -1,5 +1,6 @@
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class StudyMain {
@@ -54,8 +55,18 @@ public class StudyMain {
                         break;
                     case "T":
                         System.out.print("Currently running tasks by ID: (");
-                        tasks.forEach((k,v) -> System.out.print(v.getRunning() ? k + ", ": ""));
-                        System.out.print(")\nWhich task would you like to stop?: ");
+                        String buffer = "";
+                        for (Map.Entry<Integer, Task> e: tasks.entrySet()) {
+                            buffer += e.getValue().getRunning() ? e.getKey() : "";
+                        }
+                        String toPrint = "";
+                        for (int i = 0; i < buffer.length(); i++) {
+                            toPrint += buffer.charAt(i);
+                            if (i != buffer.length()-1) {
+                                toPrint += ", ";
+                            }
+                        }
+                        System.out.print(toPrint + ")\nWhich task would you like to stop?: ");
                         int stopId = parseId();
                         stopTask(stopId);
                         invalid = false;
@@ -141,9 +152,15 @@ public class StudyMain {
     // start logging time on task
     void startTask(int id) {
         if (tasks.keySet().contains(id)) {
-            tasks.get(id).startTask();
-            System.out.println("Task Started!");
-            pause();
+            if(!tasks.get(id).getRunning()) {
+                tasks.get(id).startTask();
+                System.out.println("Task Started!");
+                pause();
+            }
+            else {
+                System.out.println("Task already running.");
+                pause();
+            }
         }
         else {
             System.out.println("Task not found.");
@@ -153,9 +170,15 @@ public class StudyMain {
     // stop a currently running task
     void stopTask(int id) {
         if (tasks.keySet().contains(id)) {
-            tasks.get(id).endTask();
-            System.out.println("Task Stopped.");
-            pause();
+            if (tasks.get(id).getRunning()) {
+                tasks.get(id).endTask();
+                System.out.println("Task Stopped.");
+                pause();
+            }
+            else {
+                System.out.println("Task wasn't running.");
+                pause();
+            }
         }
         else {
             System.out.println("Task not found.");

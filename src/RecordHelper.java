@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Scanner;
 
 public class RecordHelper {
 
@@ -7,7 +6,7 @@ public class RecordHelper {
     private String fileName;
 
     public RecordHelper(StudyMain root) {
-        this.fileName = "src/record.txt";
+        this.fileName = "record.txt";
         this.record = new File(this.fileName);
 
         try {
